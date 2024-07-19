@@ -55,6 +55,8 @@ test_cases=(
 
 
 # Run tests
+has_failed=false
+
 for test_case in "${test_cases[@]}"; do
     # Parse test case parameters
     IFS='@' read -ra params <<< "$test_case"
@@ -72,5 +74,12 @@ for test_case in "${test_cases[@]}"; do
         echo "PASS: $operation $case_name ($input_a, $input_b) = $expected_result"
     else
         echo "FAIL: $operation $case_name ($input_a, $input_b)@ expected $expected_result, got $output"
+        has_failed=true
     fi
 done
+
+if [ "$has_failed" = true ]; then
+    exit 1
+else
+    exit 0
+fi
