@@ -56,6 +56,8 @@ test_cases=(
 
 # Run tests
 has_failed=false
+tests_passed=0
+tests_failed=0
 
 for test_case in "${test_cases[@]}"; do
     # Parse test case parameters
@@ -72,11 +74,15 @@ for test_case in "${test_cases[@]}"; do
     # Compare output with expected result
     if [ "$output" == "$expected_result" ]; then
         echo "PASS: $operation $case_name ($input_a, $input_b) = $expected_result"
+        tests_passed=$((tests_passed+1))
     else
         echo "FAIL: $operation $case_name ($input_a, $input_b)@ expected $expected_result, got $output"
+        tests_failed=$((tests_failed+1))
         has_failed=true
     fi
 done
+
+echo "Summary: Tests passed: $tests_passed, Tests failed: $tests_failed"
 
 if [ "$has_failed" = true ]; then
     exit 1
